@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from time import sleep
@@ -33,7 +34,7 @@ try:
         EC.presence_of_element_located((By.XPATH, '/html/body/header/div[1]/div[5]/ul/li[1]/a'))
     )
     elemento.click()
-    print("Elemento clicado com sucesso.")
+    print("Elemento CRIAR CONTA clicado com sucesso.")
 except Exception as e:
     print("Erro ao encontrar ou clicar no elemento: ", e)
 
@@ -43,7 +44,7 @@ try:
         EC.presence_of_element_located((By.XPATH, '//*[@id="firstName"]'))
     )
     elemento_nome.send_keys("BOT")
-    print("Elemento nome nomeado com sucesso.")
+    print("Elemento input NOME nomeado com sucesso.")
 except Exception as e:
     print("Erro ao encontrar o elemento de nome: ", e)
 
@@ -53,7 +54,7 @@ try:
         EC.presence_of_element_located((By.XPATH, '//*[@id="collectNameNext"]/div/button'))
     )
     elemento_avançar.click()
-    print("Elemento clicado com sucesso.")
+    print("Elemento botão AVANÇAR clicado com sucesso.")
 except Exception as e:
     print("Erro ao encontrar ou clicar no elemento: ", e)
 
@@ -63,29 +64,54 @@ try:
         EC.presence_of_element_located((By.XPATH, '//*[@id="day"]'))
     )
     elemento_dia.send_keys("01")
-    print("Elemento nome nomeado com sucesso.")
+    print("Elemento input DIA enumerado com sucesso.")
 except Exception as e:
-    print("Erro ao encontrar o elemento de nome: ", e)
+    print("Erro ao encontrar o elemento input DIA: ", e)
 
-# Espera até que o elemento select MÊS esteja presente na página e clica nele
+# Espera 1 segundo para que não bug a entrada nos inputs
+sleep(1)
+
+# Espera até que o elemento select MÊS esteja presente na página e preenche ele com a opção janeiro
 try:
     elemento_mês = WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="month"]'))
     )
-    elemento_mês.click()
-        # Espera até que o elemento as opções dos MÊSES estejam presente na página e clica na opção janeiro
-    try:
-        elemento_mês_janeiro = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="month"]/option[2]'))
-        )
-        elemento_mês_janeiro.click()
-        
-        print("Elemento nome nomeado com sucesso.")
-    except Exception as e:
-        print("Erro ao encontrar o elemento de nome: ", e)
-    print("Elemento nome nomeado com sucesso.")
+    # Crie um objeto Select com o elemento
+    elemento_mês = Select(elemento_mês)
+    # Selecione a primeira opção (índice 1)
+    elemento_mês.select_by_index(1)
+    print("Elemento select MÊS selecionado com sucesso.")
 except Exception as e:
-    print("Erro ao encontrar o elemento de nome: ", e)
+    print("Erro ao encontrar o elemento select MÊS: ", e)
+
+# Espera 1 segundo para que não bug a entrada nos inputs
+sleep(1)
+
+# Espera até que o elemento input ANO esteja presente na página e preenche ele com os números 2000
+try:
+    elemento_ano = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="year"]'))
+    )
+    elemento_ano.send_keys("2000")
+    print("Elemento input ANO enumerado com sucesso.")
+except Exception as e:
+    print("Erro ao encontrar o elemento input ANO: ", e)
+
+# Espera 1 segundo para que não bug a entrada nos inputs
+sleep(1)
+
+# Espera até que o elemento select GÊNERO esteja presente na página e preenche ele com a opção MULHER
+try:
+    elemento_gênero = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="gender"]'))
+    )
+    # Crie um objeto Select com o elemento
+    elemento_gênero = Select(elemento_gênero)
+    # Selecione a primeira opção (índice 1)
+    elemento_gênero.select_by_index(1)
+    print("Elemento select GÊNERO selecionado com sucesso.")
+except Exception as e:
+    print("Erro ao encontrar o elemento select GÊNERO: ", e)
 
 # Feche o navegador após a execução do script
 sleep(5)
